@@ -20,6 +20,12 @@ type TodoList interface {
 }
 
 type TodoItem interface {
+	Create(listId uint, input data.Item) (uint, error)
+	Update(listId uint, itemId uint, input data.UpdateItemInput) error
+	DoneItem(listId uint, itemId uint) error
+	DeleteByIdAndUserId(listId uint, itemId uint) error
+	GetAllByListId(listId uint) ([]data.Item, error)
+	GetByIdAndListId(listId uint, itemId uint) (data.Item, error)
 }
 
 type Repository struct {
@@ -32,5 +38,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthMysql(db),
 		TodoList:      NewTodoListMysql(db),
+		TodoItem:      NewTodoItemMysql(db),
 	}
 }

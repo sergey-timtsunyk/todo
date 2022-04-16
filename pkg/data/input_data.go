@@ -19,3 +19,16 @@ func (i *UpdateListInput) Validate() error {
 
 	return nil
 }
+
+type UpdateItemInput struct {
+	Item *string ` json:"item"`
+	Done *bool   `json:"done"`
+}
+
+func (i *UpdateItemInput) Validate() error {
+	if i.Item == nil && i.Done == nil {
+		return errors.New("update struct has no value")
+	}
+
+	return nil
+}
