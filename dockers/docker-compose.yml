@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+  db:
+    container_name: mysql_todo
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'todo_db'
+      MYSQL_USER: 'data'
+      MYSQL_PASSWORD: 'kN75vZW99qb2MunR'
+      MYSQL_ROOT_PASSWORD: 'GGWMkdd9gDmLYMdp'
+    ports:
+      - '3309:3306'
+    expose:
+      - '3309'
+    volumes:
+      - './data/mysql:/var/lib/mysql'
