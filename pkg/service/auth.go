@@ -18,7 +18,7 @@ const (
 
 type tokenClaims struct {
 	jwt.StandardClaims
-	UserId uint64 `json:"user_id"`
+	UserId uint `json:"user_id"`
 }
 
 type AuthService struct {
@@ -29,7 +29,7 @@ func NewAuthServer(repository repository.Authorization) *AuthService {
 	return &AuthService{repository: repository}
 }
 
-func (as *AuthService) CreateUser(user data.User) (uint64, error) {
+func (as *AuthService) CreateUser(user data.User) (uint, error) {
 	user.Password = generatePasswordHash(user.Password)
 
 	return as.repository.CreateUser(user)
@@ -56,7 +56,7 @@ func (as *AuthService) GenerateToken(login string, password string) (string, err
 	return token.SignedString([]byte(signingKey))
 }
 
-func (as *AuthService) ParserToken(accessToken string) (uint64, error) {
+func (as *AuthService) ParserToken(accessToken string) (uint, error) {
 	token, err := jwt.ParseWithClaims(accessToken, &tokenClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("invalid signing method")

@@ -34,13 +34,13 @@ func (h *Handler) userIdentity(c *gin.Context) {
 	c.Set(userCxt, userId)
 }
 
-func getUserIdFormContext(c *gin.Context) (uint64, error) {
+func getUserIdFormContext(c *gin.Context) (uint, error) {
 	id, ok := c.Get(userCxt)
 	if !ok {
 		return 0, errors.New("user id not found")
 	}
 
-	idInt, ok := id.(uint64)
+	idInt, ok := id.(uint)
 	if !ok {
 		return 0, errors.New("user id is invalid type")
 	}

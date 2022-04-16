@@ -6,17 +6,17 @@ import (
 )
 
 type Authorization interface {
-	CreateUser(user data.User) (uint64, error)
+	CreateUser(user data.User) (uint, error)
 	GetUserByLoginAndPass(login string, pass string) (data.User, error)
 	UpdateLoginDate(user data.User) error
 }
 
 type TodoList interface {
-	Create(userId uint64, list data.List) (uint64, error)
-	GetAll(userId uint64) ([]data.List, error)
-	GetByIdAndUserId(userId uint64, listId uint64) (data.List, error)
-	DeleteByIdAndUserId(userId uint64, listId uint64) error
-	UpdateList(userId uint64, listId uint64, updateList data.UpdateListInput) error
+	Create(userId uint, list data.List) (uint, error)
+	GetAll(userId uint) ([]data.List, error)
+	GetByIdAndUserId(userId uint, listId uint) (data.List, error)
+	DeleteByIdAndUserId(userId uint, listId uint) error
+	UpdateList(userId uint, listId uint, updateList data.UpdateListInput) error
 }
 
 type TodoItem interface {

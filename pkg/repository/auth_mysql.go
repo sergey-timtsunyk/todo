@@ -15,7 +15,7 @@ func NewAuthMysql(db *sqlx.DB) *AuthMysql {
 	return &AuthMysql{db: db}
 }
 
-func (r *AuthMysql) CreateUser(user data.User) (uint64, error) {
+func (r *AuthMysql) CreateUser(user data.User) (uint, error) {
 	query := fmt.Sprintf("INSERT INTO %s (full_name, login, password) VALUES (?, ?, ?)", usersTable)
 	stmt, err := r.db.Prepare(query)
 	if err != nil {
@@ -28,7 +28,7 @@ func (r *AuthMysql) CreateUser(user data.User) (uint64, error) {
 	}
 	userId, err := res.LastInsertId()
 
-	return uint64(userId), err
+	return uint(userId), err
 }
 
 func (r *AuthMysql) GetUserByLoginAndPass(login string, pass string) (data.User, error) {

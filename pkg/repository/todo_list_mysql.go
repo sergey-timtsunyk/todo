@@ -15,7 +15,7 @@ func NewTodoListMysql(db *sqlx.DB) *TodoListMysql {
 	return &TodoListMysql{db: db}
 }
 
-func (r *TodoListMysql) Create(userId uint64, list data.List) (uint64, error) {
+func (r *TodoListMysql) Create(userId uint, list data.List) (uint, error) {
 	query := fmt.Sprintf("INSERT INTO %s (user_id, title, description) VALUES (?, ?, ?)", todoListsTable)
 	stmt, err := r.db.Prepare(query)
 	if err != nil {
@@ -29,10 +29,10 @@ func (r *TodoListMysql) Create(userId uint64, list data.List) (uint64, error) {
 
 	listId, err := res.LastInsertId()
 
-	return uint64(listId), err
+	return uint(listId), err
 }
 
-func (r *TodoListMysql) GetAll(userId uint64) ([]data.List, error) {
+func (r *TodoListMysql) GetAll(userId uint) ([]data.List, error) {
 	var todoLists []data.List
 	query := fmt.Sprintf("SELECT * FROM %s WHERE user_id = ?", todoListsTable)
 	err := r.db.Select(&todoLists, query, userId)
@@ -40,7 +40,7 @@ func (r *TodoListMysql) GetAll(userId uint64) ([]data.List, error) {
 	return todoLists, err
 }
 
-func (r *TodoListMysql) GetByIdAndUserId(userId uint64, listId uint64) (data.List, error) {
+func (r *TodoListMysql) GetByIdAndUserId(userId uint, listId uint) (data.List, error) {
 	var todoList data.List
 	query := fmt.Sprintf("SELECT * FROM %s WHERE user_id = ? AND id = ?", todoListsTable)
 	err := r.db.Get(&todoList, query, userId, listId)
@@ -48,7 +48,7 @@ func (r *TodoListMysql) GetByIdAndUserId(userId uint64, listId uint64) (data.Lis
 	return todoList, err
 }
 
-func (r *TodoListMysql) DeleteByIdAndUserId(userId uint64, listId uint64) error {
+func (r *TodoListMysql) DeleteByIdAndUserId(userId uint, listId uint) error {
 	query := fmt.Sprintf("DELETE FROM %s WHERE user_id = ? AND id = ?", todoListsTable)
 	stmt, err := r.db.Prepare(query)
 	if err != nil {
@@ -60,7 +60,7 @@ func (r *TodoListMysql) DeleteByIdAndUserId(userId uint64, listId uint64) error 
 	return err
 }
 
-func (r *TodoListMysql) UpdateList(userId uint64, listId uint64, updateList data.UpdateListInput) error {
+func (r *TodoListMysql) UpdateList(userId uint, listId uint, updateList data.UpdateListInput) error {
 	setValues := make([]string, 0)
 	args := make([]interface{}, 0)
 

@@ -50,7 +50,7 @@ func (h *Handler) updateList(c *gin.Context) {
 		return
 	}
 
-	if err := h.services.TodoList.UpdateList(userId, listId, input); err != nil {
+	if err := h.services.TodoList.UpdateList(userId, uint(listId), input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -73,7 +73,7 @@ func (h *Handler) deleteList(c *gin.Context) {
 		return
 	}
 
-	err = h.services.TodoList.DeleteByIdAndUserId(userId, listId)
+	err = h.services.TodoList.DeleteByIdAndUserId(userId, uint(listId))
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -97,7 +97,7 @@ func (h *Handler) getListById(c *gin.Context) {
 		return
 	}
 
-	list, err := h.services.TodoList.GetByIdAndUserId(userId, listId)
+	list, err := h.services.TodoList.GetByIdAndUserId(userId, uint(listId))
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

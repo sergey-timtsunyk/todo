@@ -3,8 +3,8 @@ package data
 import "time"
 
 type List struct {
-	Id          uint64    `json:"id" db:"id"`
-	UserId      uint64    `json:"user_id" db:"user_id"`
+	Id          uint      `json:"id" db:"id"`
+	UserId      uint      `json:"user_id" db:"user_id"`
 	Title       string    `json:"title" db:"title" binding:"required"`
 	Description string    `json:"description" db:"description" binding:"required"`
 	CreatedAt   time.Time `json:"created_at" db:"created_at"`
@@ -12,8 +12,8 @@ type List struct {
 }
 
 type Item struct {
-	Id          uint64    `json:"id"`
-	TodoListsId uint64    `json:"todo_lists_id"`
+	Id          uint      `json:"id"`
+	TodoListsId uint      `json:"todo_lists_id"`
 	Item        string    `json:"item"`
 	Done        bool      `json:"done"`
 	CreateAt    time.Time `json:"create_at"`
