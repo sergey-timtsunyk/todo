@@ -31,6 +31,11 @@ func (h *Handler) userIdentity(c *gin.Context) {
 		return
 	}
 
+	if err := h.services.AuthEvent.AddVerificationEvent(userId, c.Request.Method, c.Request.RequestURI); err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
 	c.Set(userCxt, userId)
 }
 

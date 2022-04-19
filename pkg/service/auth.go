@@ -35,6 +35,12 @@ func (as *AuthService) CreateUser(user data.User) (uint, error) {
 	return as.repository.CreateUser(user)
 }
 
+func (as *AuthService) GetUserIdByLoginAndPass(login string, password string) (uint, error) {
+	user, err := as.repository.GetUserByLoginAndPass(login, generatePasswordHash(password))
+
+	return user.Id, err
+}
+
 func (as *AuthService) GenerateToken(login string, password string) (string, error) {
 	user, err := as.repository.GetUserByLoginAndPass(login, generatePasswordHash(password))
 	if err != nil {

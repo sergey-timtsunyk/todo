@@ -3,6 +3,7 @@ package repository
 import (
 	"github.com/jmoiron/sqlx"
 	"github.com/sergey-timtsunyk/todo/pkg/data"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type Authorization interface {
@@ -28,16 +29,22 @@ type TodoItem interface {
 	GetByIdAndListId(listId uint, itemId uint) (data.Item, error)
 }
 
+type AuthEvent interface {
+	Create(userId uint, uriRequest string, eventName string) error
+}
+
 type Repository struct {
 	Authorization
 	TodoList
 	TodoItem
+	AuthEvent
 }
 
-func NewRepository(db *sqlx.DB) *Repository {
+func NewRepository(db *sqlx.DB, mongoDb *mongo.Database) *Repository {
 	return &Repository{
 		Authorization: NewAuthMysql(db),
 		TodoList:      NewTodoListMysql(db),
 		TodoItem:      NewTodoItemMysql(db),
+		AuthEvent:     NewAuthEventMongo(mongoDb),
 	}
 }

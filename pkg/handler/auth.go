@@ -32,9 +32,20 @@ func (h *Handler) singIn(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	token, err := h.services.Authorization.GenerateToken(userSing.Login, userSing.Password)
 
+	token, err := h.services.Authorization.GenerateToken(userSing.Login, userSing.Password)
 	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	userId, err := h.services.Authorization.GetUserIdByLoginAndPass(userSing.Login, userSing.Password)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if err := h.services.AuthEvent.AddAuthenticationEvent(userId, c.Request.Method, c.Request.RequestURI); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}

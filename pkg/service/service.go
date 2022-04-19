@@ -9,6 +9,7 @@ type Authorization interface {
 	CreateUser(user data.User) (uint, error)
 	GenerateToken(login string, password string) (string, error)
 	ParserToken(accessToken string) (uint, error)
+	GetUserIdByLoginAndPass(login string, password string) (uint, error)
 }
 
 type TodoList interface {
@@ -28,10 +29,17 @@ type TodoItem interface {
 	GetByIdAndListId(userId uint, listId uint, itemId uint) (data.Item, error)
 }
 
+type AuthEvent interface {
+	AddVerificationEvent(userId uint, method string, uri string) error
+	AddAuthenticationEvent(userId uint, method string, uri string) error
+	AddAuthorizationEvent(userId uint, method string, uri string) error
+}
+
 type Service struct {
 	Authorization
 	TodoList
 	TodoItem
+	AuthEvent
 }
 
 func NewService(repository *repository.Repository) *Service {
@@ -39,5 +47,6 @@ func NewService(repository *repository.Repository) *Service {
 		Authorization: NewAuthServer(repository.Authorization),
 		TodoList:      NewTodoListService(repository.TodoList),
 		TodoItem:      NewTodoItemService(repository.TodoItem, repository.TodoList),
+		AuthEvent:     NewAuthEventService(repository.AuthEvent),
 	}
 }
