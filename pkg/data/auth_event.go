@@ -17,5 +17,4 @@ type AuthEvent struct {
 	EventName  string             `bson:"event_name"`
 	UriRequest string             `bson:"uri_request"`
 	CreatedAt  time.Time          `bson:"created_at"`
-	UpdatedAt  time.Time          `bson:"updated_at"`
 }

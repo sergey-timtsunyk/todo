@@ -24,7 +24,6 @@ func (r *AuthEventMongo) Create(userId uint, uriRequest string, eventName string
 		EventName:  eventName,
 		UriRequest: uriRequest,
 		CreatedAt:  time.Now(),
-		UpdatedAt:  time.Now(),
 	})
 
 	return err
